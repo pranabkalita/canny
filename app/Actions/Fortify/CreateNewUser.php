@@ -22,7 +22,7 @@ class CreateNewUser implements CreatesNewUsers
   {
     // SFORTIFY: Change the registration fields
     Validator::make($input, [
-      'role' => ['required', 'integer', 'exists:roles,id'],
+      'role_id' => ['required', 'integer', 'exists:roles,id'],
       'first_name' => ['required', 'string', 'max:255'],
       'last_name' => ['required', 'string', 'max:255'],
       'email' => [
@@ -37,7 +37,7 @@ class CreateNewUser implements CreatesNewUsers
 
     // SFORTIFY: Change the registration fields
     return User::create([
-      'role' => $input['role_id'],
+      'role_id' => $input['role_id'],
       'first_name' => $input['first_name'],
       'last_name' => $input['last_name'],
       'email' => $input['email'],
