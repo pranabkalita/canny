@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin\Users;
 
+use App\Http\Services\UserService;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Users\CreateUserRequest;
 use App\Http\Requests\Admin\Users\EditUserRequest;
 use App\Http\Resources\Admin\Users\UserResource;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -19,69 +19,39 @@ class UserController extends Controller
     $this->userService = $userService;
   }
 
-  /**
-   * Display a listing of the resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
   public function index()
   {
     return UserResource::collection($this->userService->allUsers());
   }
 
-  /**
-   * Store a newly created resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @return \Illuminate\Http\Response
-   */
   public function store(CreateUserRequest $request)
   {
     $user = $this->userService->createUser(
-      $request->except('password') + ['password' => Hash::make($request->password)]
+      $request->except('password')
+        +
+        ['password' => Hash::make($request->password)]
     );
 
-    return (new UserResource($user))->response()->setStatusCode(Response::HTTP_CREATED);
+    return (new UserResource($user))
+      ->response()
+      ->setStatusCode(Response::HTTP_CREATED);
   }
 
-  /**
-   * Display the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function show(User $user)
+  public function show($id)
   {
-    return new UserResource($user);
+    return new UserResource($this->userService->getUserById($id));
   }
 
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function update(EditUserRequest $request, User $user)
+  public function update(EditUserRequest $request, int $id)
   {
-    $user->update($request->except('password'));
+    $user = $this->userService->updateUser($id, $request->except('password'));
 
     return new UserResource($user);
   }
 
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function destroy(User $user)
+  public function destroy(int $id)
   {
-    if ($user->is_superuser) {
-      abort(403, 'Can not delete !');
-    }
-
-    $user->delete();
+    $this->userService->deleteUser($id);
 
     return response(null, Response::HTTP_NO_CONTENT);
   }

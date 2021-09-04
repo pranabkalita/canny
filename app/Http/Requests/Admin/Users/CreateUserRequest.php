@@ -3,11 +3,14 @@
 namespace App\Http\Requests\Admin\Users;
 
 use App\Models\User;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
+use App\Actions\Fortify\PasswordValidationRules;
 
 class CreateUserRequest extends FormRequest
 {
+  use PasswordValidationRules;
+
   /**
    * Determine if the user is authorized to make this request.
    *
@@ -36,16 +39,16 @@ class CreateUserRequest extends FormRequest
         'max:255',
         Rule::unique(User::class),
       ],
-      'password' => [
-        'required',
-        'string',
-        'min:10',             // must be at least 10 characters in length
-        'regex:/[a-z]/',      // must contain at least one lowercase letter
-        'regex:/[A-Z]/',      // must contain at least one uppercase letter
-        'regex:/[0-9]/',      // must contain at least one digit
-        'regex:/[@$!%*#?&]/', // must contain a special character
-        'confirmed'
-      ]
+      'password' => $this->passwordRules()
+    ];
+  }
+
+  public function messages()
+  {
+    return [
+      'password.required' => 'User must have a password.',
+      'password.min' => 'Password must be of minimum 10 characters.',
+      'password.regex' => 'Password must have a capital character, special character and a number.'
     ];
   }
 }
