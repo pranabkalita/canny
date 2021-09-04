@@ -18,6 +18,8 @@ class User extends Authenticatable implements MustVerifyEmail
    * @var string[]
    */
   protected $fillable = [
+    'role_id',
+    'avatar',
     'first_name',
     'last_name',
     'email',
@@ -41,5 +43,11 @@ class User extends Authenticatable implements MustVerifyEmail
    */
   protected $casts = [
     'email_verified_at' => 'datetime',
+  ];
+
+  public const ROLES = [
+    'ADMIN' => 'admin',
+    'SELLER' => 'seller',
+    'USER' => 'user'
   ];
 }
