@@ -14,7 +14,6 @@ The technologies used for this boilerplate are :
 2. MySql
 3. Fortify
 4. Sanctum
-5. InertiaJs (For Admin Panel Only)
 
 # How to use it ?
 
