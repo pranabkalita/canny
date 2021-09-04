@@ -50,4 +50,20 @@ class User extends Authenticatable implements MustVerifyEmail
     'SELLER' => 'seller',
     'USER' => 'user'
   ];
+
+  // HOOKS
+
+  public  static function booted()
+  {
+    static::creating(function ($model) {
+      $model->avatar = asset('/images/avatars/dummy-profile.svg');
+    });
+  }
+
+  // RELATIONSHIPS
+
+  public function role()
+  {
+    return $this->belongsTo(Role::class);
+  }
 }

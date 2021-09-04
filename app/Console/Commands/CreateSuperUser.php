@@ -59,7 +59,9 @@ class CreateSuperUser extends Command
       'email' => $email,
       'is_superuser' => true,
       'password' => Hash::make($password),
-      'email_verified_at' => Carbon::now()
+      'email_verified_at' => Carbon::now(),
+      'created_at' => Carbon::now(),
+      'updated_at' => Carbon::now(),
     ]);
 
     $this->info('Superuser created !');

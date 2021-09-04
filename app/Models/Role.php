@@ -14,4 +14,11 @@ class Role extends Model
     'SELLER' => 'Seller',
     'USER' => 'User'
   ];
+
+  // RELATIONSHIPS
+
+  public function users()
+  {
+    return $this->hasMany(User::class);
+  }
 }
