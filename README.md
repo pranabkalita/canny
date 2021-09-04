@@ -19,11 +19,11 @@ The technologies used for this boilerplate are :
 # How to use it ?
 
 1. Clone package: `git clone https://github.com/pranabkalita/canny.git`
-2. Run: `composer install`
-3. Run: `npm install`
-4. Copy `.env.example` to `.env`
-5. Enter all the details in `.env` as per your project
-6. Run: `php artisan key:generate`
-7. Run: `php artisan migrate`
-8. Run: `php artisan serve`
-9. Run: `npm run watch`
+2. Install Laravel Dependencies: `composer install`
+3. Copy `.env.example` to `.env`
+4. Enter all the details in `.env` as per your project
+5. Generate Key: `php artisan key:generate`
+6. Migrate the database: `php artisan migrate`
+7. Create super user: `php artisan canny:create superuser`
+8. Run local server: `php artisan serve`
+9. Optional (Create initial roles): `php artisan db:seed --class RoleSeeder`
